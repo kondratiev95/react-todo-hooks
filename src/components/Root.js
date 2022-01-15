@@ -1,101 +1,43 @@
-import { useState, useEffect, useCallback } from "react";
-import { TodoForm } from "./TodoForm";
-import { ListItem } from "./ListItem";
-import { Footer } from "./Footer";
-import { getData, addData, deleteItem, toggleItem, deleteCompleted, changeTodo, toggleAll} from "../api/todoAPI.js";
+import { useEffect, useCallback, useMemo } from "react";
+import { useDispatch, useSelector} from "react-redux";
+import { actions } from "../redux/actions";
+import TodoForm from "./TodoForm";
+import ListItem from "./ListItem";
+import Footer from "./Footer";
 
-export const Root = () => {
-  const [todos, setTodos] = useState([]);
-  const [counter, setCounter] = useState(0);
-  const [type, setType] = useState('all');
-  const [isAllTodosCompleted, setIsAllTodosCompleted] = useState(false);
+const Root = () => {
 
-  const updateState = useCallback((newState) => {
-    const updatedCounter = newState.filter(item => item.completed === false).length
-    setCounter(updatedCounter);
-  }, []);
+  const todosArray = useSelector(state => state.todoReducer.todos);
+  const dispatch = useDispatch();
 
-  const addItem = useCallback(val => {
-    addData(val.todoInput).then(data => {
-      setTodos([...data]);
-      updateState(data);
-    });
-  }, [updateState]);
-  
-  const removeItem = useCallback(id => {
-    deleteItem(id).then(data => {
-      setTodos([...data]);
-      updateState(data);
-    })
-  }, [updateState]);
-
-  const checkboxHandler = useCallback( id => {
-    toggleItem(id).then(data => {
-      data.map(item => item.id === id ? {...item, completed: !item.completed} : item);
-      setTodos([...data]);
-      setIsAllTodosCompleted(data.every(todoItem => todoItem.completed));
-      updateState(data);
-    })
-  }, [updateState]);
+  let isAllCompleted = useMemo(() =>  todosArray.every(item => item.completed), [todosArray]);
 
   const handleAllCompleted = useCallback(() => {
-    setIsAllTodosCompleted(!isAllTodosCompleted);
-    toggleAll(isAllTodosCompleted).then(data => {
-      setTodos([...data]);
-      updateState(data);
-    })
-  }, [isAllTodosCompleted, updateState]);
+    dispatch({ type: actions.TOGGLE_ALL.REQUEST, payload: isAllCompleted});
+  }, [isAllCompleted, dispatch]);
 
   const editTodo = useCallback((id, value) => {
-    changeTodo({id, value}).then(data => {
-      setTodos([...data]);
-    });
-  }, []);
-
-  const filterTodosType = useCallback(e => {
-    setType(e.target.getAttribute('data-type'));
-  }, []);
-
-  const deleteCompletedTodo = useCallback(() => {
-    deleteCompleted().then(data => {
-      setTodos([...data]);
-      setIsAllTodosCompleted(false);
-    })
-  }, []);
+    dispatch({ type: actions.EDIT_TODO.REQUEST, payload: { id, value }});
+  }, [dispatch]);
 
   useEffect(() => {
-    getData().then(data => {
-      setTodos([...data]);
-      updateState(data);
-    });
-  }, [updateState]);
+    dispatch({ type: actions.GET_TODOS.REQUEST});
+  }, []);
 
   return (
-    <div className="todo-container">
-      <TodoForm
-        addItem={addItem}
-        handleAllCompleted={handleAllCompleted}
-        todos={todos}
-        isAllTodosCompleted={isAllTodosCompleted}
-      />
-      <ListItem
-        editTodo={editTodo}
-        checkboxHandler={checkboxHandler}
-        removeItem={removeItem}
-        type={type}
-        todos={todos}
-      />
-      { 
-        todos.length 
-        ? 
-        <Footer 
-          filterTodosType={filterTodosType }
-          deleteCompletedTodo={deleteCompletedTodo}
-          todos={todos}
-          counter={counter}
-          type={type}
+    <>
+      <h1>todos</h1>
+      <div className="todo-container">
+        <TodoForm
+          handleAllCompleted={handleAllCompleted}
+          isAllCompleted={isAllCompleted}
         />
-        : null }
-    </div>
+        <ListItem
+          editTodo={editTodo}
+        />
+        { todosArray.length ? <Footer/> : null }
+      </div>
+    </>
   );  
 }
+export default Root;
