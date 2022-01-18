@@ -1,111 +1,113 @@
 import { takeEvery, put, call } from 'redux-saga/effects';
-import { getData, addData, deleteItem, toggleItem, deleteCompleted, toggleAll, changeTodo } from '../../api/todoAPI';
-import { actions } from '../actions';
+import * as actionCreators from '../actionsCreator';
+import * as actions from '../actions';
+import * as api from '../../api/todoAPI';
  
-
-function* watchLoadDataSaga() {
-    yield takeEvery(actions.GET_TODOS.REQUEST, getTodos);
-    yield takeEvery(actions.ADD_ITEM.REQUEST, addTodo);
-    yield takeEvery(actions.REMOVE_TODOS.REQUEST, removeTodo);;
-    yield takeEvery(actions.CHECKBOX_HANDLER.REQUEST, checkboxHandler);
-    yield takeEvery(actions.DELETE_COMPLETED.REQUEST, removeCompleted);
-    yield takeEvery(actions.TOGGLE_ALL.REQUEST, handleAllCompleted);
-    yield takeEvery(actions.EDIT_TODO.REQUEST, editTodo);
-}
-
-export default function* rootSaga() {
-    yield watchLoadDataSaga();
-}
 
 function* getTodos() {
     try {
-        const res = yield call(getData);
+        const res = yield call(api.getData);
         if(res) {
-            yield put({type: actions.GET_TODOS.SUCCESS, payload: res});
+            yield put(actionCreators.getTodoSuccessAC(res));
         } else {
-            yield put({type: actions.GET_TODOS.FAILED });
+            throw new Error('Could not get data');
         }
     } catch(e) {
-        yield put({type: actions.GET_TODOS.FAILED });
+        yield put(actionCreators.getTodosFailedAC(e.message));
     }
 }
 
 function* addTodo(params) {
     try {
-        const res = yield call(addData, params.payload);
+        const res = yield call(api.addData, params.payload);
         if(res) {
-            yield put({type: actions.ADD_ITEM.SUCCESS, payload: res});
+            yield put(actionCreators.addItemSuccessAC(res));
         } else {
-            yield put({ type: actions.ADD_ITEM.FAILED});
+            throw new Error('Could not get data');
         }
     } catch(e) {
-        yield put({ type: actions.ADD_ITEM.FAILED});
+        console.log('HELLO++++', e);
+        yield put(actionCreators.addItemFailedAC(e.message));
     }  
 }
 
 function* removeTodo(params) {
     try {
-        const res = yield call(deleteItem, params.payload);
+        const res = yield call(api.deleteItem, params.payload);
         if(res) {
-            yield put({ type: actions.REMOVE_TODOS.SUCCESS, payload: res});
+            yield put(actionCreators.removeItemSuccessAC(res));
         } else {
-            yield put({ type: actions.REMOVE_TODOS.FAILED})
+            throw new Error('Could not get data');
         }
     } catch(e) {
-        yield put({ type: actions.REMOVE_TODOS.FAILED})
+        yield put(actionCreators.removeItemFailedAC(e.message));
     }
 }
 
 function* checkboxHandler(params) {
     try {
-        const res = yield call(toggleItem, params.payload);
+        const res = yield call(api.toggleItem, params.payload);
         if(res) {
-            yield put({ type: actions.CHECKBOX_HANDLER.SUCCESS, payload: res});
+            yield put(actionCreators.checkboxSuccessAC(res));
         } else {
-            yield put({ type: actions.CHECKBOX_HANDLER.FAILED});
+            throw new Error('Could not get data');
         }
     } catch(e) {
-        yield put({ type: actions.CHECKBOX_HANDLER.FAILED});
+        yield put(actionCreators.checkboxFailedAC(e.message));
     }
 }
 
 function* removeCompleted() {
     try {
-        const res = yield call(deleteCompleted);
+        const res = yield call(api.deleteCompleted);
         if(res) {
-            yield put({ type: actions.DELETE_COMPLETED.SUCCESS, payload: res});
+            yield put(actionCreators.deleteCompletedSuccessAC(res));
         } else {
-            yield put({ type: actions.DELETE_COMPLETED.FAILED});
+            throw new Error('Could not get data');
         }
     } catch(e) {
-        yield put({ type: actions.DELETE_COMPLETED.FAILED});
+        yield put(actionCreators.deleteCompletedFailedAC(e.message));
     }
 }
 
 function* handleAllCompleted(params) {
     try {
-        const res = yield call(toggleAll, params.payload);
+        const res = yield call(api.toggleAll, params.payload);
         if(res) {
-            yield put({ type: actions.TOGGLE_ALL.SUCCESS, payload: res});
+            yield put(actionCreators.toggleAllSuccessAC(res));
         } else {
-            yield put({ type: actions.TOGGLE_ALL.FAILED });
+            throw new Error('Could not get data');
         }
     } catch(e) {
-        yield put({ type: actions.TOGGLE_ALL.FAILED });
+        yield put(actionCreators.toggleAllFailedAC(e.message));
     }
 }
 
 function* editTodo(params) {
     try {
-        const res = yield call(changeTodo, params.payload);
+        const res = yield call(api.changeTodo, params.payload);
         if(res) {
-            yield put({ type: actions.EDIT_TODO.SUCCESS, payload: res});
+            yield put(actionCreators.editTodoSuccessAC(res));
         } else {
-            yield put({ type: actions.EDIT_TODO.FAILED})
+            throw new Error('Could not get data');
         }
     } catch(e) {
-        yield put({ type: actions.EDIT_TODO.FAILED})
+        yield put(actionCreators.editTodoFailedAC(e.message));
     }
+}
+
+function* watchLoadDataSaga() {
+    yield takeEvery(actions.getTodoList.REQUEST, getTodos);
+    yield takeEvery(actions.addTodoItem.REQUEST, addTodo);
+    yield takeEvery(actions.removeTodoItem.REQUEST, removeTodo);;
+    yield takeEvery(actions.checkboxTodoHandler.REQUEST,checkboxHandler);
+    yield takeEvery(actions.deleteCompletedTodo.REQUEST, removeCompleted);
+    yield takeEvery(actions.handleAll.REQUEST, handleAllCompleted);
+    yield takeEvery(actions.editTodoItem.REQUEST, editTodo);
+}
+
+export default function* rootSaga() {
+    yield watchLoadDataSaga();
 }
 
 

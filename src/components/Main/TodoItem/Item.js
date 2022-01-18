@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react'
 import { EditInput } from './EditInput';
 import { useDispatch } from 'react-redux';
-import { actions } from '../redux/actions';
+import { checkboxRequestAC, removeItemRequestAC } from '../../../redux/actionsCreator';
 
 const Item = ({ task, editTodo }) => {
     const [editing, setEditing] = useState(false);
@@ -22,20 +22,20 @@ const Item = ({ task, editTodo }) => {
             editTodo(task._id, newValue);
             setEditing(false);
         } else {
-            dispatch({ type: actions.REMOVE_TODOS.REQUEST, payload: task._id});
+            dispatch(removeItemRequestAC(task._id));
         }
     }, [editTodo, newValue, task._id, dispatch]);
 
     const onInputKeyPress = useCallback(e => {
-        if(e.key === 'Enter') onBlur();
+        if(e.key === 'Enter') { onBlur() };
     }, [onBlur]);
 
     const onCheckboxChange = useCallback(() => {
-        dispatch({ type: actions.CHECKBOX_HANDLER.REQUEST, payload: task._id});
+        dispatch(checkboxRequestAC(task._id));
     }, [task._id, dispatch]);
 
     const deleteItem = useCallback(() => {
-        dispatch({ type: actions.REMOVE_TODOS.REQUEST, payload: task._id});
+        dispatch(removeItemRequestAC(task._id));
     },[task._id, dispatch]);
 
     return (

@@ -1,38 +1,22 @@
-export const actions = {
-    ADD_ITEM: {
-        REQUEST: 'ADD_ITEM_REQUEST',
-        SUCCESS: 'ADD_ITEM_SUCCESS',
-        FAILED: 'ADD_ITEM_FAILED'
-    },
-    GET_TODOS: {
-        REQUEST: 'GET_TODOS_REQUEST',
-        SUCCESS: 'GET_TODOS_SUCCESS',
-        FAILED: 'GET_TODOS_FAILED'
-    },
-    REMOVE_TODOS: {
-        REQUEST: 'REMOVE_TODOS_REQUEST',
-        SUCCESS: 'REMOVE_TODOS_SUCCESS',
-        FAILED: 'REMOVE_TODOS_FAILED'
-    },
-    CHECKBOX_HANDLER: {
-        REQUEST: 'CHECKBOX_HANDLER_REQUEST',
-        SUCCESS: 'CHECKBOX_HANDLER_SUCCESS',
-        FAILED: 'CHECKBOX_HANDLER_FAILED'
-    },
-    DELETE_COMPLETED: {
-        REQUEST: 'DELETE_COMPLETED_REQUEST',
-        SUCCESS: 'DELETE_COMPLETED_SUCCESS',
-        FAILED: 'DELETE_COMPLETED_FAILED'
-    },
-    TOGGLE_ALL: {
-        REQUEST: 'TOGGLE_ALL_REQUEST',
-        SUCCESS: 'TOGGLE_ALL_SUCCESS',
-        FAILED: 'TOGGLE_ALL_FAILED'
-    },
-    EDIT_TODO: {
-        REQUEST: 'EDIT_TODO_REQUEST',
-        SUCCESS: 'EDIT_TODO_SUCCESS',
-        FAILED: 'EDIT_ALL_FAILED'
-    },
-    SET_TYPE: 'SET_TYPE',
-};
+export const createActions = type => {
+    return {
+        REQUEST: `${type}_REQUEST`,
+        SUCCESS: `${type}_SUCCESS`,
+        FAILED: `${type}_FAILED`
+    }
+}
+
+export const getTodoList = createActions('GET_TODO');
+
+export const addTodoItem = createActions('ADD_ITEM');
+
+export const removeTodoItem = createActions('REMOVE_ITEM');
+
+export const checkboxTodoHandler = createActions('CHECKBOX_HANDLER');
+
+export const deleteCompletedTodo = createActions('DELETE_COMPLETED');
+
+export const handleAll = createActions('TOGGLE_ALL');
+
+export const editTodoItem = createActions('EDIT_TODO');
+

@@ -1,6 +1,6 @@
 import { createStore, applyMiddleware, combineReducers} from "redux";
 import createSagaMiddleware from "redux-saga";
-import { composeWithDevTools } from 'redux-devtools-extension';
+import logger from 'redux-logger'
 import { todoReducer } from './reducers/todoReducer';
 import rootSaga from "./sagas/todoSaga";
 
@@ -10,6 +10,6 @@ const rootReducer = combineReducers({
     todoReducer
 })
 
-export const store = createStore(rootReducer, composeWithDevTools( applyMiddleware(sagaMiddleware)));
+export const store = createStore(rootReducer, applyMiddleware(sagaMiddleware, logger));
 
 sagaMiddleware.run(rootSaga);

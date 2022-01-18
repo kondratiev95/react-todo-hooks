@@ -6,7 +6,7 @@ function TodoInput({ handleSubmit }) {
 
   const addItem = useCallback(
     (e) => {
-      if (e.key === "Enter") {
+      if (e.key === "Enter" && input.value.trim().length !== 0) {
         handleSubmit(input.value);
         input.onChange("");
       }

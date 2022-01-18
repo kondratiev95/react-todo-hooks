@@ -1,19 +1,19 @@
 import { useCallback } from "react";
 import { Form } from "react-final-form";
-import Input from "./Input";
+import Input from "../Main/TodoItem/Input";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { actions } from "../redux/actions";
+import { getTodosSelector } from "../../redux/selectors/selectors";
+import { addItemRequestAC } from "../../redux/actionsCreator";
 
 const TodoForm = ({ handleAllCompleted, isAllCompleted }) => {
+
   const dispatch = useDispatch();
-  const todosLength = useSelector(state => state.todoReducer.todos).length;
+  const todos = useSelector(getTodosSelector);
 
   const addItem = useCallback((val) => {
-    dispatch({type: actions.ADD_ITEM.REQUEST, payload: val.todoInput });
+    dispatch(addItemRequestAC(val.todoInput));
   }, [dispatch]);
-
-  console.log(isAllCompleted, 'isAllCompleted')
 
   const handleAll = useCallback(() => {
     handleAllCompleted();
@@ -21,7 +21,7 @@ const TodoForm = ({ handleAllCompleted, isAllCompleted }) => {
 
   return (
     <div className="todo-form">
-      {todosLength ? (
+      {todos.length ? (
         <i
           className={
             isAllCompleted

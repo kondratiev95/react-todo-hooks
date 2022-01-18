@@ -1,10 +1,11 @@
 import { useSelector } from "react-redux";
 import { useMemo } from "react";
-import Item from "./Item";
+import { filterTypeSelector, getTodosSelector } from "../../redux/selectors/selectors";
+import Item from "./TodoItem/Item.js";
 
 const ListItem = ({ editTodo, checkboxHandler }) =>  {
-  const type = useSelector(state => state.todoReducer.type );
-  const todos = useSelector(state => state.todoReducer.todos);
+  const type = useSelector(filterTypeSelector);
+  const todos = useSelector(getTodosSelector);
 
   const filteredTodos = useMemo(() => todos.filter(item => {
     if(type === 'active') {

@@ -1,42 +1,46 @@
 import { useEffect, useCallback, useMemo } from "react";
 import { useDispatch, useSelector} from "react-redux";
-import { actions } from "../redux/actions";
-import TodoForm from "./TodoForm";
-import ListItem from "./ListItem";
-import Footer from "./Footer";
+import { getErrorSelector, getTodosSelector } from "../redux/selectors/selectors";
+import TodoForm from "./Header/TodoForm.js";
+import ListItem from "./Main/ListItem.js";
+import Footer from "./Footer/Footer.js";
+import { editTodoRequestAC, getTodoRequestAC, toggleAllRequestAC } from "../redux/actionsCreator";
 
 const Root = () => {
-
-  const todosArray = useSelector(state => state.todoReducer.todos);
+  const todosArray = useSelector(getTodosSelector);
+  const errorMessage = useSelector(getErrorSelector);
   const dispatch = useDispatch();
-
-  let isAllCompleted = useMemo(() =>  todosArray.every(item => item.completed), [todosArray]);
+  const isAllCompleted = useMemo(() =>  todosArray.every(item => item.completed), [todosArray]);
 
   const handleAllCompleted = useCallback(() => {
-    dispatch({ type: actions.TOGGLE_ALL.REQUEST, payload: isAllCompleted});
+    dispatch(toggleAllRequestAC(isAllCompleted));
   }, [isAllCompleted, dispatch]);
 
   const editTodo = useCallback((id, value) => {
-    dispatch({ type: actions.EDIT_TODO.REQUEST, payload: { id, value }});
+    dispatch(editTodoRequestAC({ id, value }));
   }, [dispatch]);
 
   useEffect(() => {
-    dispatch({ type: actions.GET_TODOS.REQUEST});
-  }, []);
+    dispatch(getTodoRequestAC());
+  }, [dispatch]);
 
   return (
     <>
-      <h1>todos</h1>
-      <div className="todo-container">
-        <TodoForm
-          handleAllCompleted={handleAllCompleted}
-          isAllCompleted={isAllCompleted}
-        />
-        <ListItem
-          editTodo={editTodo}
-        />
-        { todosArray.length ? <Footer/> : null }
-      </div>
+      {errorMessage !== "" ? (
+        <h1>{errorMessage}</h1>
+      ) : (
+        <div>
+          <h1>todos</h1>
+          <div className="todo-container">
+            <TodoForm
+              handleAllCompleted={handleAllCompleted}
+              isAllCompleted={isAllCompleted}
+            />
+            <ListItem editTodo={editTodo} />
+            {todosArray.length ? <Footer /> : null}
+          </div>
+        </div>
+      )}
     </>
   );  
 }
