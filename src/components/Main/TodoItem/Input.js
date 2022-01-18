@@ -1,13 +1,12 @@
-import { memo } from "react";
+import { memo, useCallback } from "react";
 import { Field, useField } from "react-final-form";
-import { useCallback } from "react/cjs/react.development";
 
 function TodoInput({ handleSubmit }) {
   const { input } = useField("todoInput");
 
   const addItem = useCallback(
     (e) => {
-      if (e.key === "Enter") {
+      if (e.key === "Enter" && input.value.trim().length !== 0) {
         handleSubmit(input.value);
         input.onChange("");
       }

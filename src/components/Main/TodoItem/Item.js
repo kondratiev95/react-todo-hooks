@@ -1,10 +1,13 @@
 import { useState, useCallback } from 'react'
 import { EditInput } from './EditInput';
+import { useDispatch } from 'react-redux';
+import { checkboxRequestAC, removeItemRequestAC } from '../../../redux/actionsCreator';
 
-export const Item = ({task, editTodo, removeItem, checkboxHandler}) => {
-
+const Item = ({ task, editTodo }) => {
     const [editing, setEditing] = useState(false);
-    const [newValue, setNewValue] = useState(task.value)
+    const [newValue, setNewValue] = useState(task.value);
+
+    const dispatch = useDispatch();
  
     const onDoubleClick = useCallback(() => {
         setEditing(true);
@@ -19,23 +22,21 @@ export const Item = ({task, editTodo, removeItem, checkboxHandler}) => {
             editTodo(task._id, newValue);
             setEditing(false);
         } else {
-            removeItem(task._id);
+            dispatch(removeItemRequestAC(task._id));
         }
-    }, [editTodo, newValue, removeItem, task._id]);
+    }, [editTodo, newValue, task._id, dispatch]);
 
     const onInputKeyPress = useCallback(e => {
-        if(e.key === 'Enter') {
-            onBlur();
-        }
+        if(e.key === 'Enter') { onBlur() };
     }, [onBlur]);
 
-    const onCheckboxChange = useCallback( () => {
-        checkboxHandler(task._id);
-    }, [checkboxHandler, task._id]);
+    const onCheckboxChange = useCallback(() => {
+        dispatch(checkboxRequestAC(task._id));
+    }, [task._id, dispatch]);
 
     const deleteItem = useCallback(() => {
-        removeItem(task._id);
-    },[removeItem, task._id]);
+        dispatch(removeItemRequestAC(task._id));
+    },[task._id, dispatch]);
 
     return (
         editing 
@@ -51,7 +52,6 @@ export const Item = ({task, editTodo, removeItem, checkboxHandler}) => {
             <li className='todo-item'>
                 <input 
                     id='item-checkbox'
-                    className='input-checkbox'
                     type="checkbox" 
                     onChange={onCheckboxChange} 
                     checked={task.completed}
@@ -68,3 +68,4 @@ export const Item = ({task, editTodo, removeItem, checkboxHandler}) => {
         )
     )
 }
+export default Item;

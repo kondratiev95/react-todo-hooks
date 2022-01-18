@@ -1,8 +1,25 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useMemo } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { getTodosSelector, filterTypeSelector } from "../../redux/selectors/selectors";
+import { deleteCompletedRequestAC, setCurrentTypeAC } from "../../redux/actionsCreator";
 
-export const Footer = ({ todos, filterTodosType, deleteCompletedTodo, counter, type }) => {
- 
+const Footer = () => {
     const [isTodoCompleted, setIsTodoCompleted] = useState(false);
+    
+    const type = useSelector(filterTypeSelector);
+    const todos = useSelector(getTodosSelector);
+    const counter = useMemo(() => todos.filter(item => item.completed === false).length, [todos]);
+
+    const dispatch = useDispatch();
+
+    const filterType = useCallback( e => {
+        const currentType = e.target.getAttribute('data-type');
+        dispatch(setCurrentTypeAC(currentType));
+    }, [dispatch]);
+
+    const removeCompletedTodo = useCallback(() => {
+        dispatch(deleteCompletedRequestAC());
+    },[dispatch]);
 
     useEffect(() => {
         const isCompletedItem = todos.some(todo => todo.completed);
@@ -17,14 +34,6 @@ export const Footer = ({ todos, filterTodosType, deleteCompletedTodo, counter, t
             setIsTodoCompleted(isCompletedItem);
         }
     },[todos, isTodoCompleted]);
-
-    const filterType = useCallback( e => {
-        filterTodosType(e);
-    }, [filterTodosType]);
-
-    const removeCompletedTodo = useCallback(() => {
-        deleteCompletedTodo();
-    },[deleteCompletedTodo]);
     
     return (
         <div className='todo-footer'>
@@ -64,3 +73,4 @@ export const Footer = ({ todos, filterTodosType, deleteCompletedTodo, counter, t
         </div>
     )
 }
+export default Footer;
