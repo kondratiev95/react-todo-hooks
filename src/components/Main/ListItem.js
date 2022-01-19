@@ -1,11 +1,14 @@
 import { useSelector } from "react-redux";
 import { useMemo } from "react";
+import { ListStyles } from "./ListStyles";
 import { filterTypeSelector, getTodosSelector } from "../../redux/selectors/selectors";
 import Item from "./TodoItem/Item.js";
 
 const ListItem = ({ editTodo, checkboxHandler }) =>  {
   const type = useSelector(filterTypeSelector);
   const todos = useSelector(getTodosSelector);
+
+  const classes = ListStyles();
 
   const filteredTodos = useMemo(() => todos.filter(item => {
     if(type === 'active') {
@@ -18,7 +21,7 @@ const ListItem = ({ editTodo, checkboxHandler }) =>  {
   }), [todos, type]);
 
   return (
-    <ul className="todo-list">
+    <ul className={classes.todoList}>
       {filteredTodos.map(task => (
         <Item 
           task={task} 
