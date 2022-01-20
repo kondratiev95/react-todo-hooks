@@ -1,12 +1,13 @@
 import { useState, useCallback } from "react";
 import { EditInput } from "./EditInput";
 import { useDispatch } from "react-redux";
-import {
-  checkboxRequestAC,
-  removeItemRequestAC,
-} from "../../../redux/actionsCreator";
+import { checkboxRequestAC, removeItemRequestAC } from "../../../redux/actionsCreator";
 
+import Checkbox from "@mui/material/Checkbox";
 import { ItemStyles } from "./ItemStyles";
+import PanoramaFishEyeIcon from '@mui/icons-material/PanoramaFishEye';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import ClearOutlinedIcon from '@mui/icons-material/ClearOutlined';
 
 const Item = ({ task, editTodo }) => {
   const [editing, setEditing] = useState(false);
@@ -33,14 +34,11 @@ const Item = ({ task, editTodo }) => {
     }
   }, [editTodo, newValue, task._id, dispatch]);
 
-  const onInputKeyPress = useCallback(
-    (e) => {
-      if (e.key === "Enter") {
-        onBlur();
-      }
-    },
-    [onBlur]
-  );
+  const onInputKeyPress = useCallback((e) => {
+    if (e.key === "Enter") {
+      onBlur();
+    }
+  },[onBlur]);
 
   const onCheckboxChange = useCallback(() => {
     dispatch(checkboxRequestAC(task._id));
@@ -60,13 +58,13 @@ const Item = ({ task, editTodo }) => {
     />
   ) : (
     <li className={classes.todoItem}>
-      <input
-        id="item-checkbox"
-        type="checkbox"
-        onChange={onCheckboxChange}
-        checked={task.completed}
+      <Checkbox 
+        className={classes.itemCheckbox}
+        checked={task.completed} 
+        icon={<PanoramaFishEyeIcon/>} 
+        checkedIcon={<CheckCircleOutlineIcon/>}
+        onClick={onCheckboxChange}
       />
-      <label htmlFor={task._id} onClick={onCheckboxChange}></label>
       <p
         className={
           task.completed
@@ -75,11 +73,13 @@ const Item = ({ task, editTodo }) => {
         }
         onDoubleClick={onDoubleClick}
       >
-        {task.value}
+        {task.value.slice(0, 30)}
       </p>
-      <button onClick={deleteItem} className={classes.delete}>
-        &times;
-      </button>
+      <ClearOutlinedIcon 
+        sx={{ display: 'none' }}
+        className={classes.delete} 
+        onClick={deleteItem} 
+      />
     </li>
   );
 };

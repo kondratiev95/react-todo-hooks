@@ -1,16 +1,11 @@
 import { ItemStyles } from "./ItemStyles";
+import { Input } from '@mui/material';
 
-export const EditInput = ({
-  newValue,
-  value,
-  onInput,
-  onBlur,
-  onInputKeyPress,
-}) => {
+export const EditInput = ({newValue, value, onInput, onBlur, onInputKeyPress }) => {
   const classes = ItemStyles();
   return (
     <li className="edit-item">
-      <input
+      <Input
         type="text"
         className={classes.inputEdit}
         value={newValue}
@@ -18,6 +13,7 @@ export const EditInput = ({
         onChange={onInput}
         onBlur={onBlur}
         onKeyDown={onInputKeyPress}
+        disableUnderline={true}
         autoFocus
       />
     </li>

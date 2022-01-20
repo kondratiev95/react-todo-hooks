@@ -13,7 +13,7 @@ export const ItemStyles = makeStyles({
         display: "block",
         background: "none",
         border: "none",
-        fontSize: "20px",
+        fontSize: "25px",
         color: "tomato",
         fontWeight: "bold",
         paddingRight: "5px",
@@ -33,14 +33,26 @@ export const ItemStyles = makeStyles({
     opacity: "0.3",
   },
   inputEdit: {
-    width: "500px",
-    padding: "20px 10px 20px 15px",
-    marginLeft: "50px",
-    outline: "none",
-    border: "1px solid rgb(238, 238, 238)",
-    boxShadow: "3px 2px 2px rgb(202, 202, 202)",
+    '&.MuiInput-root': {
+      width: "500px",
+      padding: "26px 10px 26px 15px",
+      fontSize: '22px',
+      marginLeft: "50px",
+      outline: "none",
+      border: "1px solid rgb(238, 238, 238)",
+      boxShadow: "3px 2px 2px rgb(202, 202, 202)",
+    }
   },
   delete: {
-    display: "none",
   },
+  itemCheckbox: {
+    '&.MuiCheckbox-root': {
+      color: '#C0C0C0',
+      '&.Mui-checked': {
+        color: '#32CD32'
+      }
+    },
+  
+  }
+  
 });

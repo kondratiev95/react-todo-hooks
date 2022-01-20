@@ -4,15 +4,13 @@ import { Field, useField } from "react-final-form";
 function TodoInput({ handleSubmit }) {
   const { input } = useField("todoInput");
 
-  const addItem = useCallback(
-    (e) => {
-      if (e.key === "Enter" && input.value.trim().length !== 0) {
-        handleSubmit(input.value);
-        input.onChange("");
-      }
-    },
-    [handleSubmit, input]
-  );
+  const addItem = useCallback((e) => {
+    if (e.key === "Enter" && input.value.trim().length !== 0) {
+      handleSubmit(input.value);
+      input.onChange("");
+    }
+  },[handleSubmit, input]);
+  
   return (
     <Field
       name="todoInput"

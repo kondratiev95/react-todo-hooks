@@ -5,23 +5,22 @@ export const footerStyle = makeStyles({
     padding: "15px 15px 15px 25px",
     fontWeight: "300",
   },
-  focusBtn: {
-    border: "1px solid black",
-    padding: "4px",
-    borderRadius: "3px",
-  },
   clearCompleted: {
-    marginLeft: "10px",
-    border: "none",
-    background: "none",
-    cursor: "pointer",
-    fontSize: "15px",
-    marginRight: "25px",
-    "&:focus": {
-      border: "1px solid black",
-      padding: "4px",
-      borderRadius: "3px",
-    },
+    "&.MuiButton-root": {
+      marginLeft: "10px",
+      border: "none",
+      background: "none",
+      cursor: "pointer",
+      fontSize: "10px",
+      fontWeight: 'regular',
+      color: 'black',
+      marginRight: "25px",
+      "&:focus": {
+        border: "1px solid black",
+        padding: "4px",
+        borderRadius: "3px",
+      },
+    }
   },
   counter: {
     display: "inline-block",
@@ -32,17 +31,21 @@ export const footerStyle = makeStyles({
   filterBtns: {
     display: "inline-block",
     margin: "0px auto",
-    "& button": {
+  },
+  filterBtn: {
+    "&.MuiButton-root": {
       border: "none",
       background: "none",
-      fontSize: "15px",
+      fontSize: "10px",
+      fontWeight: 'regular',
+      color: 'black',
       cursor: "pointer",
-      marginRight: "25px",
+      marginRight: "0px",
       "&:focus": {
         border: "1px solid black",
         padding: "4px",
         borderRadius: "3px",
       },
     },
-  },
+  }
 });

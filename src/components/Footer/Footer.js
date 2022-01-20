@@ -1,13 +1,8 @@
 import React, { useEffect, useState, useCallback, useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  getTodosSelector,
-  filterTypeSelector,
-} from "../../redux/selectors/selectors";
-import {
-  deleteCompletedRequestAC,
-  setCurrentTypeAC,
-} from "../../redux/actionsCreator";
+import { getTodosSelector, filterTypeSelector } from "../../redux/selectors/selectors";
+import { deleteCompletedRequestAC, setCurrentTypeAC } from "../../redux/actionsCreator";
+import Button from '@mui/material/Button';
 
 import { footerStyle } from "./footerStyle";
 
@@ -16,20 +11,14 @@ const Footer = () => {
 
   const type = useSelector(filterTypeSelector);
   const todos = useSelector(getTodosSelector);
-  const counter = useMemo(
-    () => todos.filter((item) => item.completed === false).length,
-    [todos]
-  );
+  const counter = useMemo(() => todos.filter((item) => item.completed === false).length, [todos]);
   const classes = footerStyle();
   const dispatch = useDispatch();
 
-  const filterType = useCallback(
-    (e) => {
-      const currentType = e.target.getAttribute("data-type");
-      dispatch(setCurrentTypeAC(currentType));
-    },
-    [dispatch]
-  );
+  const filterType = useCallback((e) => {
+    const currentType = e.target.getAttribute("data-type");
+    dispatch(setCurrentTypeAC(currentType));
+  },[dispatch]);
 
   const removeCompletedTodo = useCallback(() => {
     dispatch(deleteCompletedRequestAC());
@@ -51,39 +40,38 @@ const Footer = () => {
 
   return (
     <div className={classes.todoFooter}>
-      <div className={classes.counter}>{`${counter} ${
-        counter === 1 ? "item" : "items"
-      } left`}</div>
+      <div className={classes.counter}>{`${counter} ${counter === 1 ? "item" : "items"} left`}</div>
       <div className={classes.filterBtns}>
-        <button
+        <Button
           data-type="all"
           onClick={filterType}
-          className={type === "all" ? classes.focusBtn : null}
+          className={classes.filterBtn || type === "all" ? `${classes.filterBtn} ${classes.focusBtn}` : null}
         >
           all
-        </button>
-        <button
+        </Button>
+        <Button
           data-type="active"
           onClick={filterType}
-          className={type === "active" ? classes.focusBtn : null}
+          size="small" 
+          className={classes.filterBtn || type === "active" ? `${classes.filterBtn} ${classes.focusBtn}` : null}
         >
           active
-        </button>
-        <button
+        </Button>
+        <Button
           data-type="completed"
           onClick={filterType}
-          className={type === "completed" ? classes.focusBtn : null}
+          className={classes.filterBtn || type === "completed" ? `${classes.filterBtn} ${classes.focusBtn}` : null}
         >
           completed
-        </button>
+        </Button>
       </div>
       {isTodoCompleted ? (
-        <button
+        <Button
           onClick={removeCompletedTodo}
           className={classes.clearCompleted}
         >
           clear completed
-        </button>
+        </Button>
       ) : null}
     </div>
   );
