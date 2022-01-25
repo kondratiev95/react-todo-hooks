@@ -1,6 +1,6 @@
 import { BASE_URL, ENDPOINTS } from "./apiConstants";
 
-const postParams = (data) => {
+const postParams = data => {
     return {
         method: 'POST',
         headers: {
@@ -13,16 +13,16 @@ const postParams = (data) => {
 export const getData = async () => {
     try {
         const response = await fetch(BASE_URL);
-        return await response.json();
+        return response.json();
     } catch(error) {
-        console.log('get-data:', error);
+        throw new Error('Something went wrong');
     }
 }
 
 export const addData = async (data) => {
     try {
-        const response = await fetch(`${BASE_URL }${ENDPOINTS.addData}`, postParams(data));
-        return await response.json();
+        const response = await fetch(`${BASE_URL}${ENDPOINTS.addData}`, postParams(data));
+        return response.json();
     } catch(error) {
         console.log('add-data:', error);
     }
@@ -31,16 +31,16 @@ export const addData = async (data) => {
 export const deleteItem = async (data) => {
     try {
         const response = await fetch(`${BASE_URL }${ENDPOINTS.removeItem}`, postParams(data));
-        return await response.json();
+        return response.json();
     } catch(error) {
-        console.log('delete-item:',error);
+        console.log('delete-item:', error);
     }
 }
 
 export const toggleItem = async (data) => {
     try {
         const response = await fetch(`${BASE_URL }${ENDPOINTS.toggleItem}`, postParams(data));
-        return await response.json();
+        return response.json();
     } catch(error) {
         console.log('toggle-item:', error);
     }
@@ -49,7 +49,7 @@ export const toggleItem = async (data) => {
 export const toggleAll = async (data) => {
     try {  
         const response = await fetch(`${BASE_URL }${ENDPOINTS.toggleAll}`, postParams(data));
-        return await response.json();
+        return response.json();
     } catch(error) {
         console.log('toggle-all:', error);
     }
@@ -58,7 +58,7 @@ export const toggleAll = async (data) => {
 export const deleteCompleted = async () => {
     try {
         const response = await fetch(`${BASE_URL}${ENDPOINTS.deleteCompleted}`, postParams(null));
-        return await response.json();
+        return response.json();
     } catch(error) {
         console.log('delete-completed:', error);
     }
@@ -67,7 +67,7 @@ export const deleteCompleted = async () => {
 export const changeTodo = async (data) => {
     try {
         const response = await fetch(`${BASE_URL}${ENDPOINTS.editTodo}`, postParams(data));
-        return await response.json();
+        return response.json();
     } catch(error) {
         console.log('edit-todo:', error);
     }
