@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { useMemo } from "react";
-import { ListStyles } from "./ListStyles";
+import useStyles from "./styles";
 import { filterTypeSelector, getTodosSelector, getErrorSelector } from "../../redux/selectors/selectors";
 import Item from "./TodoItem/Item.js";
 
@@ -8,7 +8,7 @@ const ListItem = ({ editTodo, checkboxHandler }) => {
   const type = useSelector(filterTypeSelector);
   const todos = useSelector(getTodosSelector);
   const errorMessage = useSelector(getErrorSelector);
-  const classes = ListStyles();
+  const classes = useStyles();
 
   const filteredTodos = useMemo(
     () =>

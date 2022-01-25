@@ -3,17 +3,17 @@ import { EditInput } from "./EditInput";
 import { useDispatch } from "react-redux";
 import { checkboxRequestAC, removeItemRequestAC } from "../../../redux/actionsCreator";
 
-import Checkbox from "@mui/material/Checkbox";
-import { ItemStyles } from "./ItemStyles";
-import PanoramaFishEyeIcon from '@mui/icons-material/PanoramaFishEye';
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
-import ClearOutlinedIcon from '@mui/icons-material/ClearOutlined';
+import Checkbox from "@material-ui/core/Checkbox";
+import useStyles from "./styles";
+import PanoramaFishEyeIcon from '@material-ui/icons/PanoramaFishEye';
+import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
+import ClearIcon from '@material-ui/icons/Clear'
 
 const Item = ({ task, editTodo }) => {
   const [editing, setEditing] = useState(false);
   const [newValue, setNewValue] = useState(task.value);
 
-  const classes = ItemStyles();
+  const classes =  useStyles();
 
   const dispatch = useDispatch();
 
@@ -26,7 +26,7 @@ const Item = ({ task, editTodo }) => {
   }, []);
 
   const onBlur = useCallback(() => {
-    if (newValue.trim()) {
+    if(newValue.trim()) {
       editTodo(task._id, newValue);
       setEditing(false);
     } else {
@@ -35,7 +35,7 @@ const Item = ({ task, editTodo }) => {
   }, [editTodo, newValue, task._id, dispatch]);
 
   const onInputKeyPress = useCallback((e) => {
-    if (e.key === "Enter") {
+    if(e.key === "Enter") {
       onBlur();
     }
   },[onBlur]);
@@ -55,14 +55,15 @@ const Item = ({ task, editTodo }) => {
       onInput={onInput}
       onBlur={onBlur}
       onInputKeyPress={onInputKeyPress}
+      checked={task.completed}
     />
   ) : (
     <li className={classes.todoItem}>
       <Checkbox 
-        className={classes.itemCheckbox}
+        className={classes.checkboxRoot}
         checked={task.completed} 
-        icon={<PanoramaFishEyeIcon/>} 
-        checkedIcon={<CheckCircleOutlineIcon/>}
+        icon={<PanoramaFishEyeIcon classes={{ root: classes.checkboxRoot}}/>} 
+        checkedIcon={<CheckCircleOutlineIcon classes={{ root: classes.checkboxChecked}}/>}
         onClick={onCheckboxChange}
       />
       <p
@@ -75,9 +76,8 @@ const Item = ({ task, editTodo }) => {
       >
         {task.value.slice(0, 30)}
       </p>
-      <ClearOutlinedIcon 
-        sx={{ display: 'none' }}
-        className={classes.delete} 
+      <ClearIcon 
+        classes={{ root: classes.delete}} 
         onClick={deleteItem} 
       />
     </li>

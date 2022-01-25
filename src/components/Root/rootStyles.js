@@ -1,5 +1,4 @@
-import { makeStyles } from "@mui/styles";
-
+import { makeStyles } from "@material-ui/styles";
 export const rootStyles = makeStyles({
   todoContainer: {
     width: "550px",
@@ -11,8 +10,8 @@ export const rootStyles = makeStyles({
     display: "block",
     textAlign: "center",
     color: "rgb(199, 161, 161)",
-    fontSize: "80px",
-    marginTop: "50px",
-    opacity: "0.8",
+    fontSize: "90px",
+    marginTop: "70px",
+    opacity: "1",
   },
 });

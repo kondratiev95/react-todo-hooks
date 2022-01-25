@@ -13,16 +13,15 @@ const postParams = data => {
 export const getData = async () => {
     try {
         const response = await fetch(BASE_URL);
-        return await response.json();
+        return response.json();
     } catch(error) {
         throw new Error('Something went wrong');
     }
 }
-console.log(getData())
 
 export const addData = async (data) => {
     try {
-        const response = await fetch(`${BASE_URL }${ENDPOINTS.addData}`, postParams(data));
+        const response = await fetch(`${BASE_URL}${ENDPOINTS.addData}`, postParams(data));
         return response.json();
     } catch(error) {
         console.log('add-data:', error);

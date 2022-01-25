@@ -1,6 +1,6 @@
-import { makeStyles } from "@mui/styles";
+import { makeStyles } from "@material-ui/styles";
 
-export const ListStyles = makeStyles({
+const useStyles = makeStyles(() => ({
   todoList: {
     margin: "0px auto",
     listStyleType: "none",
@@ -12,4 +12,5 @@ export const ListStyles = makeStyles({
     fontStyle: "italic",
     color: "tomato",
   },
-});
+}));
+export default useStyles;

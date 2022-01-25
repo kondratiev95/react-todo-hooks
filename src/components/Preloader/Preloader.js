@@ -1,8 +1,8 @@
-import { CircularProgress } from "@mui/material";
-import { preloaderStyles } from "./preloaderStyles";
+import { CircularProgress } from "@material-ui/core/";
+import useStyles from "./styles";
 
 const Preloader = () => {
-  const classes = preloaderStyles();
+  const classes = useStyles();
 
   return (
     <div className={classes.preloader}>

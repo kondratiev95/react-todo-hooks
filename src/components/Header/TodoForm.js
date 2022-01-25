@@ -1,16 +1,17 @@
 import { useCallback } from "react";
 import { Form } from "react-final-form";
-import Input from "../Main/TodoItem/Input";
+import MainInput from "./MainInput";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { getTodosSelector } from "../../redux/selectors/selectors";
 import { addItemRequestAC } from "../../redux/actionsCreator";
-import { formStyles } from "./formStyles";
+import FlashOnIcon from '@material-ui/icons/FlashOn';
+import useStyles from "./styles";
 
 const TodoForm = ({ handleAllCompleted, isAllCompleted }) => {
   const dispatch = useDispatch();
   const todos = useSelector(getTodosSelector);
-  const classes = formStyles();
+  const classes = useStyles();
 
   const addItem = useCallback((val) => {
     dispatch(addItemRequestAC(val.todoInput));
@@ -19,22 +20,22 @@ const TodoForm = ({ handleAllCompleted, isAllCompleted }) => {
   const handleAll = useCallback(() => {
     handleAllCompleted();
   }, [handleAllCompleted]);
-
+  console.log(isAllCompleted)
   return (
     <div className={classes.todoForm}>
       {todos.length ? (
-        <i
-          className={
+        <FlashOnIcon
+          classes={{ root: 
             isAllCompleted
-              ? `fas fa-angle-down ${classes.darkOpacity}`
-              : "fas fa-angle-down"
-          }
+              ? `${classes.toggleAll} ${classes.darkOpacity}`
+              : classes.toggleAll
+          }}
           onClick={handleAll}
-        ></i>
+        />
       ) : null}
       <Form
         onSubmit={addItem}
-        render={({ handleSubmit }) => <Input handleSubmit={handleSubmit} />}
+        render={({ handleSubmit }) => <MainInput handleSubmit={handleSubmit} />}
       />
     </div>
   );

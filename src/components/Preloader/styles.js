@@ -1,6 +1,6 @@
-import { makeStyles } from "@mui/styles";
+import { makeStyles } from "@material-ui/styles";
 
-export const preloaderStyles = makeStyles({
+const useStyles = makeStyles(() => ({
   preloader: {
     display: "block",
     margin: "0px auto",
@@ -9,4 +9,6 @@ export const preloaderStyles = makeStyles({
     height: "50px",
     fontSize: "50px",
   },
-});
+}));
+
+export default useStyles;
