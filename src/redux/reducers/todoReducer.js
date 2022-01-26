@@ -13,13 +13,49 @@ export const todoReducer = (state = initialState, action) => {
                 ...state,
                 type: action.payload
             }
-        case getTodoList.SUCCESS:
-        case addTodoItem.SUCCESS:
+        case addTodoItem.SUCCESS: 
+            return {
+                ...state,
+                todos: [...state.todos, action.payload]
+            }
         case removeTodoItem.SUCCESS:
-        case checkboxTodoHandler.SUCCESS:
-        case deleteCompletedTodo.SUCCESS:
-        case handleAll.SUCCESS:
+            console.log(action.payload)
+            return {
+                ...state,
+                todos: [...state.todos.filter(todo => todo._id !== action.payload)]
+            }
         case editTodoItem.SUCCESS:
+            return {
+                ...state,
+                todos: state.todos.map(todo => {
+                    if(todo._id === action.payload.id) {
+                        return {
+                            ...todo,
+                            value: action.payload.value
+                        }
+                    } else {
+                        return todo
+                    }
+                })
+            }
+        case checkboxTodoHandler.SUCCESS:
+            console.log(action.payload)
+            return {
+                ...state,
+                todos: [...state.todos.map(todo => {
+                    if(todo._id === action.payload) {
+                        return {
+                            ...todo,
+                            completed: !todo.completed
+                        }
+                    } else {
+                        return todo
+                    }
+                })]
+            }
+        case deleteCompletedTodo.SUCCESS:
+        case getTodoList.SUCCESS:
+        case handleAll.SUCCESS:
             return {
                 ...state,
                 todos: [...action.payload],

@@ -60,7 +60,6 @@ const Item = ({ task, editTodo }) => {
   ) : (
     <li className={classes.todoItem}>
       <Checkbox 
-        className={classes.checkboxRoot}
         checked={task.completed} 
         icon={<PanoramaFishEyeIcon classes={{ root: classes.checkboxRoot}}/>} 
         checkedIcon={<CheckCircleOutlineIcon classes={{ root: classes.checkboxChecked}}/>}
@@ -74,7 +73,7 @@ const Item = ({ task, editTodo }) => {
         }
         onDoubleClick={onDoubleClick}
       >
-        {task.value.slice(0, 30)}
+        {task.value}
       </p>
       <ClearIcon 
         classes={{ root: classes.delete}} 
